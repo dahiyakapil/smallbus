@@ -11,7 +11,7 @@ const app = express();
 app.use(morgan("dev"));
 
 
-const allowedOrigins = ["http://localhost:5173"];
+const allowedOrigins = ["https://smallbus-demo.vercel.app"];
 
 app.use(cors({
   origin: allowedOrigins[0], 
