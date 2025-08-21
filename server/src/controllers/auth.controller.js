@@ -85,3 +85,48 @@ export const getProfile = async (req, res) => {
         return res.status(500).json({ message: "Server error" });
     }
 };
+
+
+export const updateUser = async (req, res) => {
+  try {
+    const { name, password } = req.body;
+
+    const user = await User.findById(req.user._id); 
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (name) {
+      user.name = name;
+    }
+
+    
+    if (password) {
+      const passwordHash = await bcrypt.hash(password, 10);
+      user.password = passwordHash;
+    }
+
+    await user.save();
+
+    return res.json({ message: "User updated successfully" });
+  } catch (error) {
+    console.error("Update user error:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+
+export const deleteUser = async (req, res) => {
+  try {
+    const userId = req.user.id; 
+
+    await User.findByIdAndDelete(userId);
+
+    return res.json({ message: "User deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({ error: "Server error: " + error.message });
+  }
+};
+
