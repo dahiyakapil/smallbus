@@ -1,12 +1,21 @@
 import dotenv from "dotenv";
 dotenv.config()
-
+import cors from "cors"
+import morgan from "morgan";
 
 import express from "express";
 import { connectDB } from "./config/connectDB.js";
 import authRouter from "./routes/auth.route.js";
 
 const app = express();
+app.use(morgan("dev"));
+
+
+const allowedOrigins = ["http://localhost:5173"];
+
+app.use(cors({
+  origin: allowedOrigins[0], 
+}));
 
 
 const PORT = process.env.PORT || 5000;
